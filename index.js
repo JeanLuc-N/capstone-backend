@@ -79,7 +79,7 @@ app.use('/refreshToken', refreshTokenRoute);
 const logoutRoute = require("./routes/logout");
 app.use('/logout', logoutRoute);
 
-const PORT = process.env.TOKEN_SERVER_PORT || process.env.PORT || 8000;
+const PORT = process.env.TOKEN_SERVER_PORT || 8000;
 
 app.listen(PORT, ()=>{
     console.log(`server running on port ${PORT}`);
