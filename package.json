@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon index",
     "test": "mocha --timeout 10000",
-    "start": "node index"
+    "start": "node index.js"
   },
   "author": "Jean Luc",
   "license": "ISC",
