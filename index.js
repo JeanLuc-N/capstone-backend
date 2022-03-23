@@ -2,11 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
+const cors = require("cors");
 require("dotenv").config()
 
 
 const app = express();
-const uri = "mongodb://localhost/capstone";
+const uri = "mongodb+srv://clif:clif123@cluster0.fcz3q.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 mongoose.connect(uri, {useNewUrlParser:true});
 
@@ -16,34 +17,38 @@ conn.on('open', ()=>{
     console.log("connection started...");
 })
 
+app.use(cors())
 //swagger
-const options = {
-    definition: {
-      openapi: "3.0.0",
-      info: {
-        title: "Library API",
-        version: "1.0.0",
-        description: "A simple Express Library API",
-        termsOfService: "http://example.com/terms/",
-        contact: {
-          name: "API Support",
-          url: "http://www.exmaple.com/support",
-          email: "support@example.com",
-        },
+// Swagger Info Object
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: 'API Documentation',
+      description: 'API Documentation',
+      contact: {
+        name: 'My Brand'
       },
-  
-      servers: [
-        {
-          url: "http://localhost:4000",
-          description: "My API Documentation",
-        },
-      ],
-    },
-    apis: ['./routes/*.js']
-  };
-  
-  const specs = swaggerJsDoc(options);
-  app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+      server: 'http://localhost:4000'
+    }
+  },
+  components: {
+    securitySchemes: {
+      jwt: {
+        type: 'http',
+        scheme: 'bearer',
+        in: 'header',
+        bearerFormat: 'JWT'
+      }
+    }
+  },
+  security: [{
+    jwt: []
+  }],
+  apis: ['./routes/*.js']
+}
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions)
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 
 app.use(express.json());
 
@@ -56,6 +61,8 @@ app.use('/contact', contactRoute);
 
 const blogRoute = require('./routes/blog');
 app.use('/blog', blogRoute);
+const commentRoute = require('./routes/comment');
+app.use('/', commentRoute);
 
 const registerRoute = require("./routes/register");
 app.use('/register',registerRoute);

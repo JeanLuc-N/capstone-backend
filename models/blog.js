@@ -16,7 +16,15 @@ const blogShema = new mongoose.Schema({
     content: {
         type: String,
         required: true,
-    }
+    },
+    date: {
+        type: Date,
+        default: Date.now
+       },
+     comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment'
+      }]
 });
 
 

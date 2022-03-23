@@ -24,7 +24,10 @@ router.post('/', uploadImg, async(req, res)=>{
     const user = await User.find({email: email});
 
     if(user.length){
-        res.send({message: "user already exist with the same email"});
+        res.status(409).send({
+            success: true,
+            message: "user already exist with the same email"
+        });
     } else {
         if(req.body.password == req.body.verifyPassword){
             const hashedPassword = await bcrypt.hash(req.body.password, 10);

@@ -7,8 +7,6 @@ const fs = require('fs');
 const validateToken = require("../middleware/auth");
 
 
-//swagger
-
 /**
 *  @swagger
 *  tags:
@@ -31,37 +29,48 @@ const validateToken = require("../middleware/auth");
  *         type: string
  */
 
-
-//Create new log
+// create new Blog Doc
 /**
  * @swagger
- * /blog/:
+ * /blog/save:
  *   post:
  *     tags:
  *       - Blog
- *     summary: Create blog API
- *     description: Creates a new blog
+ *     summary: Create Blog API
+ *     description: Creates a new Blog
+ *     consumes:
+ *       - multipart/form-data
  *     produces:
  *       - application/json
  *     parameters:
- *       - in: body
- *         name: body
+ *       - name: authorization
+ *         in: header
  *         required: true
- *         description: body of the company
+ *       - in: formData
+ *         name: image
+ *         type: file
+ *         description: body of the blog
  *         schema:
  *           $ref: '#/definitions/Blog'
- *     resquestBody:
+ *     requestBody:
  *       content:
- *        application/json:
- *          schema:
- *            $ref: '#/definitions/Blog'
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               orderId:
+ *                 type: integer
+ *               userId:
+ *                 type: integer
+ *               fileName:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       200:
- *         description: Blog Successfully created
+ *         description: Company Successfully created
  *       500:
  *         description: error
  */
-
 
 //get all blog
 
@@ -90,8 +99,8 @@ const validateToken = require("../middleware/auth");
  *   get:
  *     tags:
  *       - Blog
- *     summary: Retrieve single blog API
- *     description: Returns a single blog
+ *     summary: Retrieve single Blog API
+ *     description: Returns a single Blog
  *     produces:
  *       - application/json
  *     parameters:
@@ -102,10 +111,29 @@ const validateToken = require("../middleware/auth");
  *         type: string
  *     responses:
  *       200:
- *         description: A single blog
+ *         description: A single Blog
  *         schema:
  *           $ref: '#/definitions/Blog'
  */
+
+/**
+  * @swagger
+  * /blog/delete:
+  *   delete:
+  *     tags:
+  *       - Blog
+  *     summary: Delete blog API
+  *     description: Deletes a single Blog
+  *     produces:
+  *       - application/json
+  *     parameters:
+  *       - name: authorization
+  *         in: header
+  *         required: true
+  *     responses:
+  *       200:
+  *         description: Successfully deleted
+  */
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
